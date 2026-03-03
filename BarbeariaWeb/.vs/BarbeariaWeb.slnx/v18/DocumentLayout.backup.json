@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -18,32 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 160,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
-              "RelativeDocumentMoniker": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
-              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
-              "RelativeToolTip": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAwEYAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-03T23:26:35.128Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AgendamentoController.cs",
               "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Controllers\\AgendamentoController.cs",
               "RelativeDocumentMoniker": "BarbeariaWeb\\Controllers\\AgendamentoController.cs",
               "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Controllers\\AgendamentoController.cs",
               "RelativeToolTip": "BarbeariaWeb\\Controllers\\AgendamentoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAQwGkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-03T23:24:06.615Z",
+              "WhenOpened": "2026-03-03T23:36:42.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FirebaseService.cs",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Services\\FirebaseService.cs",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Services\\FirebaseService.cs",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Services\\FirebaseService.cs",
+              "RelativeToolTip": "BarbeariaWeb\\Services\\FirebaseService.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAEwEQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-03T23:35:17.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "RelativeToolTip": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwEwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-03T23:26:35.128Z",
               "EditorCaption": ""
             }
           ]

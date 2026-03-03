@@ -33,26 +33,17 @@ public class FirebaseService
     }
     public async Task<bool> HorarioOcupadoAsync(string barbeiroId, DateTime dataHora)
     {
-        var inicioDia = dataHora.Date;
-        var fimDia = inicioDia.AddDays(1);
+        var inicio = dataHora;
+        var fim = dataHora.AddMinutes(1);
 
         var snapshot = await _db.Collection("agendamentos")
             .WhereEqualTo("BarbeiroId", barbeiroId)
             .WhereEqualTo("Status", "Agendado")
-            .WhereGreaterThanOrEqualTo("DataHora", Timestamp.FromDateTime(inicioDia.ToUniversalTime()))
-            .WhereLessThan("DataHora", Timestamp.FromDateTime(fimDia.ToUniversalTime()))
+            .WhereGreaterThanOrEqualTo("DataHora", Timestamp.FromDateTime(inicio.ToUniversalTime()))
+            .WhereLessThan("DataHora", Timestamp.FromDateTime(fim.ToUniversalTime()))
             .GetSnapshotAsync();
 
-        foreach (var doc in snapshot.Documents)
-        {
-            var agendamento = doc.ConvertTo<Agendamento>();
-            var dataExistente = agendamento.DataHora.ToDateTime();
-
-            if (dataExistente == dataHora)
-                return true;
-        }
-
-        return false;
+        return snapshot.Count > 0;
     }
 
     public async Task<List<Agendamento>> GetAgendamentosAsync()

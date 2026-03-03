@@ -61,6 +61,9 @@ public class AgendamentoController : Controller
     [HttpGet]
     public async Task<IActionResult> HorariosDisponiveis(string barbeiroId, string servicoId, DateTime data)
     {
+        if (string.IsNullOrEmpty(barbeiroId) || string.IsNullOrEmpty(servicoId))
+            return Json(new List<string>());
+
         var servicos = await _firebase.GetServicosAsync();
         var servico = servicos.FirstOrDefault(s => s.Id == servicoId);
 
@@ -69,31 +72,41 @@ public class AgendamentoController : Controller
 
         var agendamentos = await _firebase.GetAgendamentosPorDataAsync(barbeiroId, data);
 
-        List<string> horariosLivres = new();
+        var horariosLivres = new List<string>();
 
-        DateTime inicioExpediente = data.Date.AddHours(9);
-        DateTime fimExpediente = data.Date.AddHours(19);
+        var inicioExpediente = data.Date.AddHours(9);
+        var fimExpediente = data.Date.AddHours(19);
+        var agora = DateTime.Now;
 
-        for (DateTime horario = inicioExpediente;
-             horario.AddMinutes(servico.DuracaoMinutos) <= fimExpediente;
-             horario = horario.AddMinutes(30)) // intervalo de 30 min
+        foreach (var slot in GerarSlots(inicioExpediente, fimExpediente, 30))
         {
-            DateTime novoInicio = horario;
-            DateTime novoFim = horario.AddMinutes(servico.DuracaoMinutos);
+            if (data.Date == agora.Date && slot <= agora)
+                continue;
+
+            var novoInicio = slot;
+            var novoFim = slot.AddMinutes(servico.DuracaoMinutos);
 
             bool conflito = agendamentos.Any(a =>
             {
-                DateTime existenteInicio = a.DataHora.ToDateTime().ToLocalTime();
-                DateTime existenteFim = existenteInicio.AddMinutes(
-                    servicos.First(s => s.Id == a.ServicoId).DuracaoMinutos);
+                var existenteInicio = a.DataHora.ToDateTime().ToLocalTime();
+                var servicoExistente = servicos.FirstOrDefault(s => s.Id == a.ServicoId);
+                if (servicoExistente == null) return false;
+
+                var existenteFim = existenteInicio.AddMinutes(servicoExistente.DuracaoMinutos);
 
                 return novoInicio < existenteFim && novoFim > existenteInicio;
             });
 
-            if (!conflito)
+            if (!conflito && novoFim <= fimExpediente)
                 horariosLivres.Add(novoInicio.ToString("HH:mm"));
         }
 
         return Json(horariosLivres);
+    }
+
+    private IEnumerable<DateTime> GerarSlots(DateTime inicio, DateTime fim, int intervaloMinutos)
+    {
+        for (var dt = inicio; dt < fim; dt = dt.AddMinutes(intervaloMinutos))
+            yield return dt;
     }
 }
