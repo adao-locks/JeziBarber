@@ -17,7 +17,6 @@ public class AgendamentoController : Controller
 
         ViewBag.Barbeiros = barbeiros;
         ViewBag.Servicos = servicos;
-        ViewBag.Horarios = GerarHorariosPadrao();
 
         return View();
     }
@@ -96,21 +95,5 @@ public class AgendamentoController : Controller
         }
 
         return Json(horariosLivres);
-    }
-
-    private List<string> GerarHorariosPadrao()
-    {
-        var horarios = new List<string>();
-
-        var inicio = new TimeSpan(8, 0, 0);
-        var fim = new TimeSpan(18, 0, 0);
-        var intervalo = TimeSpan.FromMinutes(30);
-
-        for (var hora = inicio; hora < fim; hora += intervalo)
-        {
-            horarios.Add(hora.ToString(@"hh\:mm"));
-        }
-
-        return horarios;
     }
 }

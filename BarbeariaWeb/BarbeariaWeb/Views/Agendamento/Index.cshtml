@@ -65,13 +65,8 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Horário</label>
-                            <select name="horario" class="form-select">
-                                <option value="">Selecione um horário</option>
-
-                                @foreach (var h in ViewBag.Horarios)
-                                {
-                                    <option value="@h">@h</option>
-                                }
+                            <select name="hora" id="hora" class="form-select" required>
+                                <option value="">Selecione horário</option>
                             </select>
                         </div>
                     </div>
@@ -87,21 +82,24 @@
 </div>
 
 <script>
-        const servicoSelect = document.querySelector("select[name='servicoId']");
+    const dataInput = document.getElementById("data");
+    const barbeiroSelect = document.querySelector("select[name='barbeiroId']");
+    const horaSelect = document.getElementById("hora");
+    const dataHoraHidden = document.getElementById("dataHora");
+
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+    dataInput.min = hoje.toISOString().split("T")[0];
 
     async function carregarHorarios() {
 
         const data = dataInput.value;
         const barbeiroId = barbeiroSelect.value;
-        const servicoId = servicoSelect.value;
 
-        if (!data || !barbeiroId || !servicoId)
+        if (!data || !barbeiroId)
             return;
 
-        const response = await fetch(
-            `/Agendamento/HorariosDisponiveis?barbeiroId=${barbeiroId}&servicoId=${servicoId}&data=${data}`
-        );
-
+        const response = await fetch(`/Agendamento/HorariosDisponiveis?barbeiroId=${barbeiroId}&data=${data}`);
         const horarios = await response.json();
 
         horaSelect.innerHTML = "<option value=''>Selecione</option>";
@@ -112,9 +110,11 @@
 
             let horario = new Date(data + "T" + h);
 
+            // Se for hoje, bloquear horários passados
             if (new Date(data).toDateString() === agora.toDateString()) {
-                if (horario <= agora)
+                if (horario <= agora) {
                     return;
+                }
             }
 
             let option = document.createElement("option");
@@ -126,5 +126,10 @@
 
     dataInput.addEventListener("change", carregarHorarios);
     barbeiroSelect.addEventListener("change", carregarHorarios);
-    servicoSelect.addEventListener("change", carregarHorarios);
+
+    horaSelect.addEventListener("change", function () {
+        let data = dataInput.value;
+        let hora = horaSelect.value;
+        dataHoraHidden.value = data + "T" + hora + ":00";
+    });
 </script>
