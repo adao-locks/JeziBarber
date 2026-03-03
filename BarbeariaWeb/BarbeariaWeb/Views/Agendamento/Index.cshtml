@@ -1,0 +1,130 @@
+﻿@{
+    var barbeiros = ViewBag.Barbeiros as List<Barbeiro>;
+    var servicos = ViewBag.Servicos as List<Servico>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0" style="border-radius:12px;">
+            <div class="card-body p-4">
+
+                <h3 class="text-center mb-4 fw-bold">
+                    Agendar Horário
+                </h3>
+
+                @if (TempData["Erro"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["Erro"]
+                    </div>
+                }
+
+                <form method="post" asp-action="Criar">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Telefone</label>
+                        <input type="text" name="telefone" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Serviço</label>
+                        <select name="servicoId" class="form-select" required>
+                            <option value="">Selecione</option>
+                            @foreach (var s in servicos)
+                            {
+                                <option value="@s.Id">
+                                    @s.Descricao - R$ @s.Valor
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Barbeiro</label>
+                        <select name="barbeiroId" class="form-select" required>
+                            <option value="">Selecione</option>
+                            @foreach (var b in barbeiros)
+                            {
+                                <option value="@b.Id">
+                                    @b.Nome
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Data</label>
+                            <input type="date" name="data" id="data" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Horário</label>
+                            <select name="horario" class="form-select">
+                                <option value="">Selecione um horário</option>
+
+                                @foreach (var h in ViewBag.Horarios)
+                                {
+                                    <option value="@h">@h</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-3">
+                        Confirmar Agendamento
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        const servicoSelect = document.querySelector("select[name='servicoId']");
+
+    async function carregarHorarios() {
+
+        const data = dataInput.value;
+        const barbeiroId = barbeiroSelect.value;
+        const servicoId = servicoSelect.value;
+
+        if (!data || !barbeiroId || !servicoId)
+            return;
+
+        const response = await fetch(
+            `/Agendamento/HorariosDisponiveis?barbeiroId=${barbeiroId}&servicoId=${servicoId}&data=${data}`
+        );
+
+        const horarios = await response.json();
+
+        horaSelect.innerHTML = "<option value=''>Selecione</option>";
+
+        let agora = new Date();
+
+        horarios.forEach(h => {
+
+            let horario = new Date(data + "T" + h);
+
+            if (new Date(data).toDateString() === agora.toDateString()) {
+                if (horario <= agora)
+                    return;
+            }
+
+            let option = document.createElement("option");
+            option.value = h;
+            option.text = h;
+            horaSelect.appendChild(option);
+        });
+    }
+
+    dataInput.addEventListener("change", carregarHorarios);
+    barbeiroSelect.addEventListener("change", carregarHorarios);
+    servicoSelect.addEventListener("change", carregarHorarios);
+</script>

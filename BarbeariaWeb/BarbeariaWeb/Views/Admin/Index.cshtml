@@ -1,0 +1,117 @@
+﻿@model List<Agendamento>
+
+<div class="container">
+
+    <h2 class="mb-4 fw-bold">📊 Dashboard - Agendamentos</h2>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+            <a asp-controller="AdminCadastro"
+               asp-action="Barbeiros"
+               class="btn btn-dark w-100 p-3">
+                🧔 Gerenciar Barbeiros
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-controller="AdminCadastro"
+               asp-action="Servicos"
+               class="btn btn-secondary w-100 p-3">
+                ✂️ Gerenciar Serviços
+            </a>
+        </div>
+
+    </div>
+
+    <form method="get" class="row mb-4">
+        <div class="col-md-3">
+            <input type="date" name="data" value="@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6>Total</h6>
+                <h3>@ViewBag.Total</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6>Agendados</h6>
+                <h3 class="text-warning">@ViewBag.Agendados</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6>Concluídos</h6>
+                <h3 class="text-success">@ViewBag.Concluidos</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 text-center p-3">
+                <h6>Cancelados</h6>
+                <h3 class="text-danger">@ViewBag.Cancelados</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Telefone</th>
+                        <th>Horário</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>@a.NomeCliente</td>
+                            <td>@a.Telefone</td>
+                            <td>@a.DataHora.ToDateTime().ToLocalTime().ToString("HH:mm")</td>
+                            <td>
+                                @if (a.Status == "Agendado")
+                                {
+                                    <span class="badge bg-warning text-dark">Agendado</span>
+                                }
+                                else if (a.Status == "Cancelado")
+                                {
+                                    <span class="badge bg-danger">Cancelado</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Concluído</span>
+                                }
+                            </td>
+                            <td>
+                                @if (a.Status == "Agendado")
+                                {
+                                    <a asp-action="Concluir" asp-route-id="@a.Id" class="btn btn-success btn-sm">✔</a>
+                                    <a asp-action="Cancelar" asp-route-id="@a.Id" class="btn btn-danger btn-sm">✖</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
