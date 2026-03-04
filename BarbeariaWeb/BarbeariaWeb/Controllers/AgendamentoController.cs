@@ -78,7 +78,7 @@ public class AgendamentoController : Controller
         var fimExpediente = data.Date.AddHours(19);
         var agora = DateTime.Now;
 
-        foreach (var slot in GerarSlots(inicioExpediente, fimExpediente, 30))
+        foreach (var slot in GerarSlots(inicioExpediente, fimExpediente, servico.DuracaoMinutos))
         {
             if (data.Date == agora.Date && slot <= agora)
                 continue;
@@ -104,9 +104,14 @@ public class AgendamentoController : Controller
         return Json(horariosLivres);
     }
 
-    private IEnumerable<DateTime> GerarSlots(DateTime inicio, DateTime fim, int intervaloMinutos)
+    private IEnumerable<DateTime> GerarSlots(DateTime inicio, DateTime fim, int duracaoMinutosServico)
     {
-        for (var dt = inicio; dt < fim; dt = dt.AddMinutes(intervaloMinutos))
+        if (duracaoMinutosServico <= 0)
+        {
+            throw new ArgumentException($"A duração do serviço deve ser maior que zero. Valor recebido: {duracaoMinutosServico}", nameof(duracaoMinutosServico));
+        }
+
+        for (var dt = inicio; dt < fim; dt = dt.AddMinutes(duracaoMinutosServico))
             yield return dt;
     }
 }
