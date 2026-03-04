@@ -78,16 +78,21 @@ public class FirebaseService
 
     public async Task<List<Agendamento>> GetAgendamentosPorDataAsyncDash(DateTime data)
     {
-        var inicioDia = data.Date;
-        var fimDia = inicioDia.AddDays(1);
+        var inicioLocal = data.Date;
+        var fimLocal = inicioLocal.AddDays(1);
+
+        var inicioUtc = DateTime.SpecifyKind(inicioLocal, DateTimeKind.Local).ToUniversalTime();
+        var fimUtc = DateTime.SpecifyKind(fimLocal, DateTimeKind.Local).ToUniversalTime();
 
         var snapshot = await _db.Collection("agendamentos")
-            .WhereGreaterThanOrEqualTo("DataHora", Timestamp.FromDateTime(inicioDia.ToUniversalTime()))
-            .WhereLessThan("DataHora", Timestamp.FromDateTime(fimDia.ToUniversalTime()))
+            .WhereGreaterThanOrEqualTo("DataHora", Timestamp.FromDateTime(inicioUtc))
+            .WhereLessThan("DataHora", Timestamp.FromDateTime(fimUtc))
             .OrderBy("DataHora")
             .GetSnapshotAsync();
 
-        return snapshot.Documents.Select(d => d.ConvertTo<Agendamento>()).ToList();
+        return snapshot.Documents
+            .Select(d => d.ConvertTo<Agendamento>())
+            .ToList();
     }
 
     // BARBEIROS

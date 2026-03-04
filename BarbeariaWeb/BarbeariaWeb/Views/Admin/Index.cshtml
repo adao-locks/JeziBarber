@@ -1,117 +1,231 @@
 ﻿@model List<Agendamento>
 
-<div class="container">
+<div class="container py-4">
 
-    <h2 class="mb-4 fw-bold">📊 Dashboard - Agendamentos</h2>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Dashboard</h2>
+            <small class="text-muted">
+                Agendamentos do dia @(((DateTime)ViewBag.DataSelecionada).ToString("dd/MM/yyyy"))
+            </small>
+        </div>
+        <form method="get" class="d-flex gap-2">
+            <input type="date"
+                   name="data"
+                   value="@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))"
+                   class="form-control" />
+            <button type="submit" class="btn btn-primary">
+                Filtrar
+            </button>
+        </form>
+    </div>
 
-    <div class="row mt-4">
-
-        <div class="col-md-4">
+    <!-- Botões de Gestão -->
+    <div class="row mb-4 g-3">
+        <div class="col-md-6">
             <a asp-controller="AdminCadastro"
                asp-action="Barbeiros"
-               class="btn btn-dark w-100 p-3">
-                🧔 Gerenciar Barbeiros
+               class="card border-0 shadow-sm text-decoration-none p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:50px;height:50px;">
+                        🧔
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Gerenciar Barbeiros</h6>
+                        <small class="text-muted">Cadastrar e ativar barbeiros</small>
+                    </div>
+                </div>
             </a>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <a asp-controller="AdminCadastro"
                asp-action="Servicos"
-               class="btn btn-secondary w-100 p-3">
-                ✂️ Gerenciar Serviços
+               class="card border-0 shadow-sm text-decoration-none p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:50px;height:50px;">
+                        ✂️
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Gerenciar Serviços</h6>
+                        <small class="text-muted">Criar e editar serviços</small>
+                    </div>
+                </div>
             </a>
         </div>
-
     </div>
 
-    <form method="get" class="row mb-4">
-        <div class="col-md-3">
-            <input type="date" name="data" value="@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
-        </div>
-    </form>
+    <!-- Cards de Métricas -->
+    <div class="row g-3 mb-4">
 
-    <div class="row mb-4">
-
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6>Total</h6>
-                <h3>@ViewBag.Total</h3>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <small class="text-muted">Total</small>
+                <h4 class="fw-bold">@ViewBag.Total</h4>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6>Agendados</h6>
-                <h3 class="text-warning">@ViewBag.Agendados</h3>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <small class="text-muted">Agendados</small>
+                <h4 class="fw-bold text-warning">@ViewBag.Agendados</h4>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6>Concluídos</h6>
-                <h3 class="text-success">@ViewBag.Concluidos</h3>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <small class="text-muted">Concluídos</small>
+                <h4 class="fw-bold text-success">@ViewBag.Concluidos</h4>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h6>Cancelados</h6>
-                <h3 class="text-danger">@ViewBag.Cancelados</h3>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <small class="text-muted">Cancelados</small>
+                <h4 class="fw-bold text-danger">@ViewBag.Cancelados</h4>
             </div>
         </div>
 
     </div>
 
-    <div class="card shadow border-0">
-        <div class="card-body">
+    <!-- DESKTOP TABLE -->
+    <div class="card border-0 shadow-sm d-none d-md-block">
+        <div class="card-body p-0">
 
-            <table class="table table-hover align-middle">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Telefone</th>
-                        <th>Horário</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var a in Model)
-                    {
-                        <tr>
-                            <td>@a.NomeCliente</td>
-                            <td>@a.Telefone</td>
-                            <td>@a.DataHora.ToDateTime().ToLocalTime().ToString("HH:mm")</td>
-                            <td>
-                                @if (a.Status == "Agendado")
-                                {
-                                    <span class="badge bg-warning text-dark">Agendado</span>
-                                }
-                                else if (a.Status == "Cancelado")
-                                {
-                                    <span class="badge bg-danger">Cancelado</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success">Concluído</span>
-                                }
-                            </td>
-                            <td>
-                                @if (a.Status == "Agendado")
-                                {
-                                    <a asp-action="Concluir" asp-route-id="@a.Id" class="btn btn-success btn-sm">✔</a>
-                                    <a asp-action="Cancelar" asp-route-id="@a.Id" class="btn btn-danger btn-sm">✖</a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
+            @if (!Model.Any())
+            {
+                <div class="text-center p-5 text-muted">
+                    Nenhum agendamento para este dia.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Telefone</th>
+                                <th>Horário</th>
+                                <th>Status</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var a in Model.OrderBy(x => x.DataHora))
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@a.NomeCliente</td>
+                                    <td>@a.Telefone</td>
+                                    <td>@a.DataHora.ToDateTime().ToLocalTime().ToString("HH:mm")</td>
+                                    <td>
+                                        @if (a.Status == "Agendado")
+                                        {
+                                            <span class="badge bg-warning text-dark">Agendado</span>
+                                        }
+                                        else if (a.Status == "Cancelado")
+                                        {
+                                            <span class="badge bg-danger">Cancelado</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Concluído</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        @if (a.Status == "Agendado")
+                                        {
+                                            <a asp-action="Concluir" asp-route-id="@a.Id"
+                                               class="btn btn-sm btn-success me-2">
+                                                ✔
+                                            </a>
+                                            <a asp-action="Cancelar" asp-route-id="@a.Id"
+                                               class="btn btn-sm btn-outline-danger">
+                                                ✖
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
+    </div>
+
+    <!-- MOBILE CARDS -->
+    <div class="d-md-none">
+
+        @if (!Model.Any())
+        {
+            <div class="text-center p-4 text-muted">
+                Nenhum agendamento para este dia.
+            </div>
+        }
+        else
+        {
+            @foreach (var a in Model.OrderBy(x => x.DataHora))
+            {
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong>@a.NomeCliente</strong>
+                            <span>
+                                @a.DataHora.ToDateTime().ToLocalTime().ToString("HH:mm")
+                            </span>
+                        </div>
+
+                        <div class="mb-2 text-muted">
+                            📞 @a.Telefone
+                        </div>
+
+                        <div class="mb-3">
+                            @if (a.Status == "Agendado")
+                            {
+                                <span class="badge bg-warning text-dark w-100 py-2">
+                                    Agendado
+                                </span>
+                            }
+                            else if (a.Status == "Cancelado")
+                            {
+                                <span class="badge bg-danger w-100 py-2">
+                                    Cancelado
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success w-100 py-2">
+                                    Concluído
+                                </span>
+                            }
+                        </div>
+
+                        @if (a.Status == "Agendado")
+                        {
+                            <div class="d-grid gap-2">
+                                <a asp-action="Concluir"
+                                   asp-route-id="@a.Id"
+                                   class="btn btn-success">
+                                    ✔ Concluir
+                                </a>
+                                <a asp-action="Cancelar"
+                                   asp-route-id="@a.Id"
+                                   class="btn btn-outline-danger">
+                                    ✖ Cancelar
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        }
+
     </div>
 
 </div>
