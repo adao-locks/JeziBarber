@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization; // Adicione esta linha
+using Microsoft.AspNetCore.Mvc;
 
+[Authorize] // Adicione esta linha no nível da classe
 public class AdminCadastroController : Controller
 {
     private readonly FirebaseService _firebase;
@@ -9,8 +11,7 @@ public class AdminCadastroController : Controller
         _firebase = firebase;
     }
 
-    // ===== BARBEIROS =====
-
+    // ... (mantenha todos os métodos existentes)
     public async Task<IActionResult> Barbeiros()
     {
         var lista = await _firebase.GetTodosBarbeirosAsync();
@@ -34,8 +35,6 @@ public class AdminCadastroController : Controller
         await _firebase.AtualizarStatusBarbeiroAsync(id, ativo);
         return RedirectToAction("Barbeiros");
     }
-
-    // ===== SERVIÇOS =====
 
     public async Task<IActionResult> Servicos()
     {

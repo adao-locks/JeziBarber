@@ -3,126 +3,373 @@
     var servicos = ViewBag.Servicos as List<Servico>;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow border-0" style="border-radius:12px;">
-            <div class="card-body p-4">
+<div class="container-fluid px-3 px-md-5 py-5">
 
-                <h3 class="text-center mb-4 fw-bold">
-                    Agendar Horário
-                </h3>
+    <div class="text-end mb-3">
+        <a href="/Admin/Login" class="btn btn-outline-dark btn-sm">
+            Área Administrativa
+        </a>
+    </div>
 
-                @if (TempData["Erro"] != null)
-                {
-                    <div class="alert alert-danger">
-                        @TempData["Erro"]
-                    </div>
-                }
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
 
-                <form method="post" asp-action="Criar">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Agende seu horário</h2>
+                <p class="text-muted mb-0">
+                    Agende agora seu corte!
+                </p>
+            </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Nome</label>
-                        <input type="text" name="nome" class="form-control" required />
-                    </div>
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4 p-md-5">
 
-                    <div class="mb-3">
-                        <label class="form-label">Telefone</label>
-                        <input type="text" name="telefone" class="form-control" required />
-                    </div>
+                    @if (TempData["Erro"] != null)
+                    {
+                        <div class="alert alert-danger rounded-3">
+                            @TempData["Erro"]
+                        </div>
+                    }
 
-                    <div class="mb-3">
-                        <label class="form-label">Serviço</label>
-                        <select name="servicoId" class="form-select" required>
-                            <option value="">Selecione</option>
-                            @foreach (var s in servicos)
-                            {
-                                <option value="@s.Id">
-                                    @s.Descricao - R$ @s.Valor
-                                </option>
-                            }
-                        </select>
-                    </div>
+                    <form method="post" asp-action="Criar" id="formAgendamento">
 
-                    <div class="mb-3">
-                        <label class="form-label">Barbeiro</label>
-                        <select name="barbeiroId" class="form-select" required>
-                            <option value="">Selecione</option>
-                            @foreach (var b in barbeiros)
-                            {
-                                <option value="@b.Id">
-                                    @b.Nome
-                                </option>
-                            }
-                        </select>
-                    </div>
+                        <!-- DADOS DO CLIENTE -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Seus Dados</h6>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Data</label>
-                            <input type="date" name="data" id="data" class="form-control" required />
+                            <div class="mb-3">
+                                <label class="form-label">Nome completo</label>
+                                <input type="text" name="nome" class="form-control form-control-lg rounded-3" required />
+                            </div>
+
+                            <div>
+                                <label class="form-label">Telefone</label>
+                                <input type="tel" name="telefone" class="form-control form-control-lg rounded-3" required />
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Horário</label>
-                            <select name="hora" id="hora" class="form-select" required>
-                                <option value="">Selecione horário</option>
+                        <!-- SERVIÇO -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Serviço</h6>
+
+                            <select name="servicoId"
+                                    id="servico"
+                                    class="form-select form-select-lg rounded-3"
+                                    required>
+                                <option value="">Selecione o serviço</option>
+                                @foreach (var s in servicos)
+                                {
+                                    <option value="@s.Id">
+                                        @s.Descricao - R$ @s.Valor
+                                    </option>
+                                }
                             </select>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary w-100 mt-3">
-                        Confirmar Agendamento
-                    </button>
+                        <!-- BARBEIRO -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Profissional</h6>
 
-                    <input type="hidden" name="dataHora" id="dataHora" />
-                </form>
+                            <select name="barbeiroId"
+                                    id="barbeiro"
+                                    class="form-select form-select-lg rounded-3"
+                                    required>
+                                <option value="">Selecione o barbeiro</option>
+                                @foreach (var b in barbeiros)
+                                {
+                                    <option value="@b.Id">
+                                        @b.Nome
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- DATA E HORA -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Data e horário</h6>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="calendar-container mb-3">
+
+                                        <div class="calendar-header">
+                                            <button type="button" id="prevMonth" class="nav-btn">‹</button>
+                                            <h6 id="monthLabel" class="mb-0 fw-bold"></h6>
+                                            <button type="button" id="nextMonth" class="nav-btn">›</button>
+                                        </div>
+
+                                        <div class="calendar-weekdays">
+                                            <span>Dom</span>
+                                            <span>Seg</span>
+                                            <span>Ter</span>
+                                            <span>Qua</span>
+                                            <span>Qui</span>
+                                            <span>Sex</span>
+                                            <span>Sáb</span>
+                                        </div>
+
+                                        <div id="calendarDays" class="calendar-days"></div>
+
+                                    </div>
+
+                                    <input type="hidden" name="data" id="data" />
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <select name="hora"
+                                            id="hora"
+                                            class="form-select form-select-lg rounded-3"
+                                            required>
+                                        <option value="">Selecione horário</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="loadingHorarios"
+                                 class="text-muted small mt-2 d-none">
+                                Carregando horários disponíveis...
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                                id="btnConfirmar"
+                                class="btn btn-primary btn-lg w-100 rounded-3 py-3">
+                            Confirmar Agendamento
+                        </button>
+
+                        <input type="hidden" name="dataHora" id="dataHora" />
+
+                    </form>
+
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 
+<style>
+    .calendar-container {
+        background: #fff;
+        padding: 15px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .nav-btn {
+        background: #f1f3f5;
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        font-size: 18px;
+    }
+
+    .calendar-weekdays,
+    .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+    }
+
+    .calendar-weekdays span {
+        font-size: 12px;
+        color: #6c757d;
+        padding: 5px 0;
+    }
+
+    .calendar-days div {
+        padding: 10px 0;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: .2s;
+    }
+
+    .calendar-days div:hover {
+        background: #f8f9fa;
+    }
+
+    .calendar-days .disabled {
+        color: #ced4da;
+        pointer-events: none;
+    }
+
+    .calendar-days .selected {
+        background: #0d6efd;
+        color: white;
+        font-weight: 600;
+    }
+
+    .calendar-days .today {
+        border: 1px solid #0d6efd;
+    }
+
+    .card {
+        transition: 0.3s ease;
+    }
+
+    .btn-primary {
+        font-weight: 600;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+    }
+
+    h6 {
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #6c757d;
+    }
+</style>
+
 <script>
-    const dataInput = document.getElementById("data");
-    const barbeiroSelect = document.querySelector("select[name='barbeiroId']");
+    const calendarDays = document.getElementById("calendarDays");
+    const monthLabel = document.getElementById("monthLabel");
+    const hiddenDateInput = document.getElementById("data");
+    const barbeiroSelect = document.getElementById("barbeiro");
+    const servicoSelect = document.getElementById("servico");
     const horaSelect = document.getElementById("hora");
     const dataHoraHidden = document.getElementById("dataHora");
-    const servicoSelect = document.querySelector("select[name='servicoId']");
+    const loading = document.getElementById("loadingHorarios");
+    const btnConfirmar = document.getElementById("btnConfirmar");
 
-    const hoje = new Date();
-    hoje.setHours(0,0,0,0);
-    dataInput.min = hoje.toISOString().split("T")[0];
+    let currentDate = new Date();
+
+    async function renderCalendar() {
+
+        const barbeiroId = barbeiroSelect.value;
+        const servicoId = servicoSelect.value;
+
+        if (!barbeiroId || !servicoId) {
+            calendarDays.innerHTML = "<div class='text-muted small'>Selecione serviço e barbeiro</div>";
+            return;
+        }
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+
+        monthLabel.innerText = new Date(year, month - 1)
+            .toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+
+        calendarDays.innerHTML = "";
+
+        const response = await fetch(
+            `/Agendamento/DiasDisponiveis?barbeiroId=${barbeiroId}&servicoId=${servicoId}&ano=${year}&mes=${month}`
+        );
+
+        const dias = await response.json();
+
+        const firstDay = new Date(year, month - 1, 1);
+
+        for (let i = 0; i < firstDay.getDay(); i++) {
+            calendarDays.innerHTML += "<div></div>";
+        }
+
+        dias.forEach(d => {
+
+            const date = new Date(d.data + "T00:00:00");
+            const dayElement = document.createElement("div");
+            dayElement.innerText = date.getDate();
+
+            if (!d.temDisponibilidade) {
+                dayElement.classList.add("disabled");
+            }
+
+            dayElement.addEventListener("click", function () {
+
+                if (!d.temDisponibilidade)
+                    return;
+
+                document.querySelectorAll(".calendar-days div")
+                    .forEach(x => x.classList.remove("selected"));
+
+                dayElement.classList.add("selected");
+
+                hiddenDateInput.value = d.data;
+
+                carregarHorarios();
+            });
+
+            calendarDays.appendChild(dayElement);
+        });
+    }
 
     async function carregarHorarios() {
 
-        const data = dataInput.value;
+        const data = hiddenDateInput.value;
         const barbeiroId = barbeiroSelect.value;
         const servicoId = servicoSelect.value;
 
         if (!data || !barbeiroId || !servicoId)
             return;
 
-        const response = await fetch(`/Agendamento/HorariosDisponiveis?barbeiroId=${barbeiroId}&servicoId=${servicoId}&data=${data}`);
+        loading.classList.remove("d-none");
+        horaSelect.innerHTML = "<option>Carregando...</option>";
+
+        const response = await fetch(
+            `/Agendamento/HorariosDisponiveis?barbeiroId=${barbeiroId}&servicoId=${servicoId}&data=${data}`
+        );
+
         const horarios = await response.json();
 
-        horaSelect.innerHTML = "<option value=''>Selecione</option>";
+        horaSelect.innerHTML = "<option value=''>Selecione horário</option>";
+
+        if (horarios.length === 0) {
+            horaSelect.innerHTML = "<option value=''>Sem horários disponíveis</option>";
+        }
 
         horarios.forEach(h => {
-
             let option = document.createElement("option");
             option.value = h;
             option.text = h;
             horaSelect.appendChild(option);
         });
+
+        loading.classList.add("d-none");
     }
 
-    dataInput.addEventListener("change", carregarHorarios);
-    barbeiroSelect.addEventListener("change", carregarHorarios);
-    servicoSelect.addEventListener("change", carregarHorarios);
+    barbeiroSelect.addEventListener("change", () => {
+        hiddenDateInput.value = "";
+        horaSelect.innerHTML = "<option value=''>Selecione horário</option>";
+        renderCalendar();
+    });
+
+    servicoSelect.addEventListener("change", () => {
+        hiddenDateInput.value = "";
+        horaSelect.innerHTML = "<option value=''>Selecione horário</option>";
+        renderCalendar();
+    });
+
+    document.getElementById("prevMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+
+    document.getElementById("nextMonth").addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
 
     horaSelect.addEventListener("change", function () {
-        let data = dataInput.value;
+        let data = hiddenDateInput.value;
         let hora = horaSelect.value;
         dataHoraHidden.value = data + "T" + hora + ":00";
     });
+
+    document.getElementById("formAgendamento").addEventListener("submit", function () {
+        btnConfirmar.innerHTML = "Confirmando...";
+        btnConfirmar.disabled = true;
+    });
+
+    renderCalendar();
 </script>

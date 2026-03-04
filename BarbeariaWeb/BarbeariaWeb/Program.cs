@@ -1,6 +1,16 @@
 using Google.Cloud.Firestore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Admin/Login";
+        options.AccessDeniedPath = "/Admin/Login";
+    });
+
+builder.Services.AddAuthorization();
 
 Environment.SetEnvironmentVariable(
     "GOOGLE_APPLICATION_CREDENTIALS", 
@@ -30,7 +40,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();  
+app.UseAuthorization();   
 
 app.MapStaticAssets();
 
@@ -38,6 +49,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Agendamento}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
