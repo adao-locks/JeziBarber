@@ -1,41 +1,122 @@
 ﻿@model List<Barbeiro>
 
-<h2 class="mb-4">🧔 Cadastro de Barbeiros</h2>
+<div class="container py-4">
 
-<form method="post" asp-action="CriarBarbeiro" class="mb-4">
-    <div class="row">
-        <div class="col-md-6">
-            <input type="text" name="nome" class="form-control" placeholder="Nome do barbeiro" required />
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+        <div>
+            <h3 class="fw-bold mb-0">Cadastro de Barbeiros</h3>
+            <small class="text-muted">Gerencie os profissionais da barbearia</small>
         </div>
-        <div class="col-md-2">
-            <button class="btn btn-primary">Cadastrar</button>
+
+        <a href="/Admin" class="btn btn-outline-dark rounded-3">
+            ← Voltar
+        </a>
+
+    </div>
+
+    <!-- CARD CADASTRO -->
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-body">
+
+            <h6 class="fw-bold mb-3 text-uppercase text-muted">
+                Novo Barbeiro
+            </h6>
+
+            <form method="post" asp-action="CriarBarbeiro">
+                <div class="row g-3">
+
+                    <div class="col-md-8 col-12">
+                        <input type="text"
+                               name="nome"
+                               class="form-control form-control-lg"
+                               placeholder="Nome do barbeiro"
+                               required />
+                    </div>
+
+                    <div class="col-md-4 col-12">
+                        <button class="btn btn-primary w-100 btn-lg">
+                            + Cadastrar Barbeiro
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
         </div>
     </div>
-</form>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Status</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model)
-        {
-            <tr>
-                <td>@b.Nome</td>
-                <td>@(b.Ativo ? "Ativo" : "Inativo")</td>
-                <td>
-                    <a asp-action="ToggleBarbeiro"
-                       asp-route-id="@b.Id"
-                       asp-route-ativo="@(!b.Ativo)"
-                       class="btn btn-sm btn-warning">
-                        @(b.Ativo ? "Desativar" : "Ativar")
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- LISTA -->
+    <div class="card shadow-sm border-0 rounded-4">
+
+        <div class="card-body">
+
+            <h6 class="fw-bold mb-3 text-uppercase text-muted">
+                Barbeiros Cadastrados
+            </h6>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Barbeiro</th>
+                            <th>Status</th>
+                            <th class="text-end">Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var b in Model)
+                        {
+                            <tr>
+
+                                <td class="fw-semibold">
+                                    @b.Nome
+                                </td>
+
+                                <td>
+                                    @if (b.Ativo)
+                                    {
+                                        <span class="badge bg-success">
+                                            Ativo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Inativo
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-action="ToggleBarbeiro"
+                                       asp-route-id="@b.Id"
+                                       asp-route-ativo="@(!b.Ativo)"
+                                       class="btn btn-sm @(b.Ativo ? "btn-outline-danger" : "btn-outline-success")">
+
+                                        @(b.Ativo ? "Desativar" : "Ativar")
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

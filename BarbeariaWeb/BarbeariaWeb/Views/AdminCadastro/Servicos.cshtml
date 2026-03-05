@@ -1,51 +1,180 @@
 ﻿@model List<Servico>
 
-<h2 class="mb-4">✂️ Cadastro de Serviços</h2>
+<div class="container-fluid px-3 px-md-5 py-4">
 
-<form method="post" asp-action="CriarServico" class="mb-4">
-    <div class="row">
-        <div class="col-md-4">
-            <input type="text" name="descricao" class="form-control" placeholder="Descrição" required />
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+        <div>
+            <h3 class="fw-bold mb-0">Cadastro de Serviços</h3>
+            <small class="text-muted">Gerencie os serviços disponíveis na barbearia</small>
         </div>
-        <div class="col-md-3">
-            <input type="number" name="duracaoMinutos" class="form-control" placeholder="Duração (min)" required />
-        </div>
-        <div class="col-md-3">
-            <input type="number" step="0.01" name="valor" class="form-control" placeholder="Valor" required />
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-primary">Cadastrar</button>
+
+        <a href="/Admin" class="btn btn-outline-dark rounded-3">
+            ← Voltar
+        </a>
+
+    </div>
+
+
+    <!-- CARD CADASTRO -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+
+            <h6 class="fw-bold text-muted mb-3 text-uppercase">
+                Novo Serviço
+            </h6>
+
+            <form method="post" asp-action="CriarServico">
+
+                <div class="row g-3">
+
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Descrição</label>
+                        <input type="text"
+                               name="descricao"
+                               class="form-control form-control-lg rounded-3"
+                               placeholder="Ex: Corte masculino"
+                               required />
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <label class="form-label">Duração (min)</label>
+                        <input type="number"
+                               name="duracaoMinutos"
+                               class="form-control form-control-lg rounded-3"
+                               placeholder="30"
+                               required />
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <label class="form-label">Valor (R$)</label>
+                        <input type="number"
+                               step="0.01"
+                               name="valor"
+                               class="form-control form-control-lg rounded-3"
+                               placeholder="50.00"
+                               required />
+                    </div>
+
+                    <div class="col-12 col-md-2 d-grid">
+                        <label class="form-label d-none d-md-block">&nbsp;</label>
+                        <button class="btn btn-dark btn-lg rounded-3">
+                            + Cadastrar
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
         </div>
     </div>
-</form>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Descrição</th>
-            <th>Duração</th>
-            <th>Valor</th>
-            <th>Status</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var s in Model)
-        {
-            <tr>
-                <td>@s.Descricao</td>
-                <td>@s.DuracaoMinutos min</td>
-                <td>R$ @s.Valor</td>
-                <td>@(s.Ativo ? "Ativo" : "Inativo")</td>
-                <td>
-                    <a asp-action="ToggleServico"
-                       asp-route-id="@s.Id"
-                       asp-route-ativo="@(!s.Ativo)"
-                       class="btn btn-sm btn-warning">
-                        @(s.Ativo ? "Desativar" : "Ativar")
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+    <!-- LISTA -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-0">
+
+            <div class="p-4 border-bottom">
+                <h6 class="fw-bold mb-0">Serviços Cadastrados</h6>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Duração</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th class="text-end">Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+
+                                <td class="fw-semibold">
+                                    @s.Descricao
+                                </td>
+
+                                <td>
+                                    ⏱ @s.DuracaoMinutos min
+                                </td>
+
+                                <td>
+                                    <span class="fw-semibold text-success">
+                                        R$ @s.Valor
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if (s.Ativo)
+                                    {
+                                        <span class="badge bg-success-subtle text-success">
+                                            Ativo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary">
+                                            Inativo
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-action="ToggleServico"
+                                       asp-route-id="@s.Id"
+                                       asp-route-ativo="@(!s.Ativo)"
+                                       class="btn btn-sm @(s.Ativo ? "btn-outline-danger" : "btn-outline-success")">
+
+                                        @(s.Ativo ? "Desativar" : "Ativar")
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+
+    .card {
+        transition: .2s;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    .table td,
+    .table th {
+        padding: 16px;
+    }
+
+    .badge {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+</style>
