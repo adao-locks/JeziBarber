@@ -80,10 +80,10 @@
 
                         <!-- DATA E HORA -->
                         <div class="mb-4">
-                            <h6 class="fw-bold mb-3">Data e horário</h6>
+                            <h6 class="fw-bold mb-3">Data</h6>
 
-                            <div class="row g-3">
-                                <div class="col-12 col-md-6">
+                            <div class="mb-4">
+                                <div class="mb-4">
                                     <div class="calendar-container mb-3">
 
                                         <div class="calendar-header">
@@ -108,28 +108,31 @@
 
                                     <input type="hidden" name="data" id="data" />
                                 </div>
-
-                                <div class="col-12 col-md-6">
-                                    <select name="hora"
-                                            id="hora"
-                                            class="form-select form-select-lg rounded-3"
-                                            required>
-                                        <option value="">Selecione horário</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div id="loadingHorarios"
-                                 class="text-muted small mt-2 d-none">
-                                Carregando horários disponíveis...
                             </div>
                         </div>
 
-                        <button type="submit"
-                                id="btnConfirmar"
-                                class="btn btn-primary btn-lg w-100 rounded-3 py-3">
-                            Confirmar Agendamento
-                        </button>
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Horário</h6>
+                            <select name="hora"
+                                    id="hora"
+                                    class="form-select form-select-lg rounded-3"
+                                    required>
+                                <option value="">Selecione horário</option>
+                            </select>
+                        </div>
+
+                        <div id="loadingHorarios"
+                             class="text-muted small mt-2 d-none">
+                            Carregando horários disponíveis...
+                        </div>
+
+                        <div class="mb-4">
+                            <button type="submit"
+                                    id="btnConfirmar"
+                                    class="btn btn-primary btn-lg w-100 rounded-3 py-3">
+                                Confirmar Agendamento
+                            </button>
+                        </div>
 
                         <input type="hidden" name="dataHora" id="dataHora" />
 
