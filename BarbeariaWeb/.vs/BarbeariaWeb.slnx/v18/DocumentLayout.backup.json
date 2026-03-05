@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 160,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "RelativeToolTip": "BarbeariaWeb\\Views\\Agendamento\\Index.cshtml",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-05T22:12:45.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAD8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-05T22:28:14.688Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -59,12 +59,9 @@ public class AgendamentoController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> HorariosDisponiveis(
-    string barbeiroId,
-    string servicoId,
-    DateTime data)
+    public async Task<IActionResult> HorariosDisponiveis(string barbeiroId, DateTime data)
     {
-        var horarios = await GetHorariosDisponiveisInterno(barbeiroId, servicoId, data);
+        var horarios = await GetHorariosDisponiveisInterno(barbeiroId, data);
         return Json(horarios);
     }
 
@@ -80,7 +77,7 @@ public class AgendamentoController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DiasDisponiveis(string barbeiroId, string servicoId, int ano, int mes)
+    public async Task<IActionResult> DiasDisponiveis(string barbeiroId, int ano, int mes)
     {
         var resultado = new List<object>();
 
@@ -100,7 +97,7 @@ public class AgendamentoController : Controller
                 continue;
             }
 
-            var horarios = await GetHorariosDisponiveisInterno(barbeiroId, servicoId, data);
+            var horarios = await GetHorariosDisponiveisInterno(barbeiroId, data);
 
             resultado.Add(new
             {
@@ -112,16 +109,9 @@ public class AgendamentoController : Controller
         return Json(resultado);
     }
 
-    private async Task<List<string>> GetHorariosDisponiveisInterno(
-    string barbeiroId,
-    string servicoId,
-    DateTime data)
+    private async Task<List<string>> GetHorariosDisponiveisInterno(string barbeiroId,DateTime data)
     {
-        var servicos = await _firebase.GetServicosAsync();
-        var servico = servicos.FirstOrDefault(s => s.Id == servicoId);
-
-        if (servico == null)
-            return new List<string>();
+        int duracaoPadrao = 60;
 
         var agendamentos = await _firebase.GetAgendamentosPorDataAsync(barbeiroId, data);
 
@@ -131,17 +121,16 @@ public class AgendamentoController : Controller
         DateTime fimExpediente = data.Date.AddHours(19);
 
         for (DateTime horario = inicioExpediente;
-             horario.AddMinutes(servico.DuracaoMinutos) <= fimExpediente;
+             horario.AddMinutes(duracaoPadrao) <= fimExpediente;
              horario = horario.AddMinutes(30))
         {
             DateTime novoInicio = horario;
-            DateTime novoFim = horario.AddMinutes(servico.DuracaoMinutos);
+            DateTime novoFim = horario.AddMinutes(duracaoPadrao);
 
             bool conflito = agendamentos.Any(a =>
             {
                 DateTime existenteInicio = a.DataHora.ToDateTime().ToLocalTime();
-                DateTime existenteFim = existenteInicio.AddMinutes(
-                    servicos.First(s => s.Id == a.ServicoId).DuracaoMinutos);
+                DateTime existenteFim = existenteInicio.AddMinutes(duracaoPadrao);
 
                 return novoInicio < existenteFim && novoFim > existenteInicio;
             });
