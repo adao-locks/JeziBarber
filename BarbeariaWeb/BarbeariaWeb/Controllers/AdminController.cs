@@ -13,7 +13,6 @@ public class AdminController : Controller
     public AdminController(FirebaseService firebase)
     {
         _firebase = firebase; 
-        Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123"));
     }
 
     [AllowAnonymous]
@@ -25,7 +24,8 @@ public class AdminController : Controller
 
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Login(string usuario, string senha)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(string usuario, string senha, string? returnUrl)
     {
         var admin = await _firebase.GetAdminPorUsuarioAsync(usuario);
 
@@ -35,9 +35,7 @@ public class AdminController : Controller
             return View();
         }
 
-        bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, admin.senhaHash);
-
-        if (!senhaValida)
+        if (string.IsNullOrEmpty(admin.senhaHash) || !BCrypt.Net.BCrypt.Verify(senha, admin.senhaHash))
         {
             ViewBag.Erro = "Usuário ou senha inválidos.";
             return View();
@@ -58,6 +56,9 @@ public class AdminController : Controller
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal);
+
+        if (!string.IsNullOrEmpty(returnUrl))
+            return Redirect(returnUrl);
 
         return RedirectToAction("Index", "Admin");
     }
@@ -86,12 +87,14 @@ public class AdminController : Controller
         return View(agendamentos);
     }
 
+    [Authorize]
     public async Task<IActionResult> Cancelar(string id)
     {
         await _firebase.AtualizarStatusAsync(id, "Cancelado");
         return RedirectToAction("Index");
     }
 
+    [Authorize]
     public async Task<IActionResult> Concluir(string id)
     {
         await _firebase.AtualizarStatusAsync(id, "Concluido");
