@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Firestore;
+using Google.Cloud.Firestore.V1;
 
 public class FirebaseService
 {
@@ -6,6 +7,7 @@ public class FirebaseService
 
     public FirebaseService(FirestoreDb db)
     {
+        //Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123"));
         _db = db;
     }
 
@@ -130,5 +132,19 @@ public class FirebaseService
     {
         await _db.Collection("servicos").Document(id)
             .UpdateAsync("Ativo", ativo);
+    }
+
+    public async Task<Admin?> GetAdminPorUsuarioAsync(string usuario)
+    {
+        var snapshot = await _db.Collection("admins")
+                                .WhereEqualTo("usuario", usuario)
+                                .GetSnapshotAsync();
+
+        var doc = snapshot.Documents.FirstOrDefault();
+
+        if (doc == null)
+            return null;
+
+        return doc.ConvertTo<Admin>();
     }
 }

@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Generators;
 using System.Security.Claims;
 
 [Authorize]
 public class AdminController : Controller
 {
-    private const string UsuarioAdmin = "admin";
-    private const string SenhaAdmin = "123";
     private readonly FirebaseService _firebase;
 
     public AdminController(FirebaseService firebase)
     {
-        _firebase = firebase;
+        _firebase = firebase; 
+        Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123"));
     }
 
     [AllowAnonymous]
@@ -27,29 +27,39 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(string usuario, string senha)
     {
-        if (usuario == UsuarioAdmin && senha == SenhaAdmin)
+        var admin = await _firebase.GetAdminPorUsuarioAsync(usuario);
+
+        if (admin == null)
         {
-            var claims = new List<Claim>
+            ViewBag.Erro = "Usuário ou senha inválidos.";
+            return View();
+        }
+
+        bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, admin.senhaHash);
+
+        if (!senhaValida)
+        {
+            ViewBag.Erro = "Usuário ou senha inválidos.";
+            return View();
+        }
+
+        var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, usuario),
+                new Claim(ClaimTypes.Name, admin.usuario),
                 new Claim(ClaimTypes.Role, "Admin")
             };
 
-            var identity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
+        var identity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var principal = new ClaimsPrincipal(identity);
+        var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal);
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal);
 
-            return RedirectToAction("Index", "Admin");
-        }
-
-        ViewBag.Erro = "Usuário ou senha inválidos.";
-        return View();
+        return RedirectToAction("Index", "Admin");
     }
 
     [Authorize]
