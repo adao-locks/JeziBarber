@@ -1,0 +1,55 @@
+﻿@model TrocarSenhaViewModel
+
+<div class="container py-5" style="max-width:500px;">
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-4 text-center">
+                🔐 Alterar Senha
+            </h4>
+
+            <form asp-action="AlterarSenha" method="post">
+
+                <div class="mb-3">
+                    <label asp-for="SenhaAtual" class="form-label"></label>
+                    <input asp-for="SenhaAtual" class="form-control" />
+                    <span asp-validation-for="SenhaAtual" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NovaSenha" class="form-label"></label>
+                    <input asp-for="NovaSenha" class="form-control" />
+                    <span asp-validation-for="NovaSenha" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmarSenha" class="form-label"></label>
+                    <input asp-for="ConfirmarSenha" class="form-control" />
+                    <span asp-validation-for="ConfirmarSenha" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+
+                    <button class="btn btn-primary">
+                        Alterar Senha
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Voltar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

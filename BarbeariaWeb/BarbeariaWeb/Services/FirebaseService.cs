@@ -1,5 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
+using Microsoft.AspNetCore.Mvc;
+using BCrypt.Net;
 
 public class FirebaseService
 {
@@ -146,5 +148,22 @@ public class FirebaseService
             return null;
 
         return doc.ConvertTo<Admin>();
+    }
+
+    public async Task AlterarSenha(string adminId, string senhaAtual, string novaSenha)
+    {
+        var doc = await _db.Collection("admins").Document(adminId).GetSnapshotAsync();
+
+        if (!doc.Exists)
+            throw new Exception("Usuário não encontrado.");
+
+        var senhaHash = doc.GetValue<string>("senhaHash");
+
+        if (!BCrypt.Net.BCrypt.Verify(senhaAtual, senhaHash))
+            throw new Exception("Senha atual incorreta.");
+
+        var novoHash = BCrypt.Net.BCrypt.HashPassword(novaSenha);
+
+        await doc.Reference.UpdateAsync("senhaHash", novoHash);
     }
 }

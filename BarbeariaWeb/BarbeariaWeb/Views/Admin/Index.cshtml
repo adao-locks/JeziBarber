@@ -14,12 +14,20 @@
 
 <div class="container-fluid px-3 px-md-5 py-4">
 
-    <div class="text-end mb-3">
+    <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
+
+        <a asp-controller="Admin"
+           asp-action="AlterarSenha"
+           class="btn btn-outline-secondary btn-sm">
+            Trocar Senha
+        </a>
+
         <a asp-controller="Admin"
            asp-action="Logout"
            class="btn btn-outline-danger btn-sm">
-            Sair
+           Sair
         </a>
+
     </div>
 
     <!-- HEADER -->

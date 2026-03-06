@@ -100,4 +100,32 @@ public class AdminController : Controller
         await _firebase.AtualizarStatusAsync(id, "Concluido");
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public IActionResult AlterarSenha()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AlterarSenha(TrocarSenhaViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        try
+        {
+            var adminId = User.FindFirst("uid")?.Value;
+
+            await _firebase.AlterarSenha(adminId, model.SenhaAtual, model.NovaSenha);
+
+            TempData["ToastSucesso"] = "Senha alterada com sucesso!";
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            TempData["ToastErro"] = ex.Message;
+            return RedirectToAction("AlterarSenha");
+        }
+    }
 }
