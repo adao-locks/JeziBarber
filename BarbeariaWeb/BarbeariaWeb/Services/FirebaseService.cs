@@ -147,11 +147,18 @@ public class FirebaseService
         if (doc == null)
             return null;
 
-        return doc.ConvertTo<Admin>();
+        var admin = doc.ConvertTo<Admin>();
+
+        admin.Id = doc.Id;
+
+        return admin;
     }
 
     public async Task AlterarSenha(string adminId, string senhaAtual, string novaSenha)
     {
+        if (string.IsNullOrEmpty(adminId))
+            throw new Exception("Admin inválido.");
+
         var doc = await _db.Collection("admins").Document(adminId).GetSnapshotAsync();
 
         if (!doc.Exists)

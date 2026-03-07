@@ -3,6 +3,8 @@
 [FirestoreData]
 public class Admin
 {
+    public string Id { get; set; }
+
     [FirestoreProperty("usuario")]
     public string usuario { get; set; }
 

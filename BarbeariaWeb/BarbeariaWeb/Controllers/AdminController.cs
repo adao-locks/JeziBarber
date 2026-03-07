@@ -42,10 +42,11 @@ public class AdminController : Controller
         }
 
         var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, admin.usuario),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
+        {
+            new Claim(ClaimTypes.Name, admin.usuario),
+            new Claim(ClaimTypes.NameIdentifier, admin.Id),
+            new Claim(ClaimTypes.Role, "Admin")
+        };
 
         var identity = new ClaimsIdentity(
             claims,
@@ -115,7 +116,12 @@ public class AdminController : Controller
 
         try
         {
-            var adminId = User.FindFirst("uid")?.Value;
+            var adminId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(adminId))
+            {
+                return BadRequest("Admin não identificado.");
+            }
 
             await _firebase.AlterarSenha(adminId, model.SenhaAtual, model.NovaSenha);
 
@@ -128,4 +134,5 @@ public class AdminController : Controller
             return RedirectToAction("AlterarSenha");
         }
     }
+
 }

@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|c:\\users\\andro\\onedrive\\documentos\\projetos\\jezibarber\\jezibarber\\barbeariaweb\\barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3CB8A241-5304-0B9D-7004-C3BE4E816E36}|BarbeariaWeb\\BarbeariaWeb.csproj|solutionrelative:barbeariaweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,17 +26,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 160,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Admin.cs",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Models\\Admin.cs",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Models\\Admin.cs",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Models\\Admin.cs",
+              "RelativeToolTip": "BarbeariaWeb\\Models\\Admin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-07T13:47:19.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FirebaseService.cs",
+              "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Services\\FirebaseService.cs",
+              "RelativeDocumentMoniker": "BarbeariaWeb\\Services\\FirebaseService.cs",
+              "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Services\\FirebaseService.cs",
+              "RelativeToolTip": "BarbeariaWeb\\Services\\FirebaseService.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAA5wJYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-07T13:42:40.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "BarbeariaWeb\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAQwFsAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAQwD8AAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-03-06T23:22:25.812Z",
               "EditorCaption": ""
@@ -41,7 +75,7 @@
               "RelativeDocumentMoniker": "BarbeariaWeb\\Controllers\\AdminController.cs",
               "ToolTip": "C:\\Users\\andro\\OneDrive\\Documentos\\PROJETOS\\JeziBarber\\JeziBarber\\BarbeariaWeb\\BarbeariaWeb\\Controllers\\AdminController.cs",
               "RelativeToolTip": "BarbeariaWeb\\Controllers\\AdminController.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAA4wIEAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAQwHwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-05T23:18:00.624Z",
               "EditorCaption": ""
