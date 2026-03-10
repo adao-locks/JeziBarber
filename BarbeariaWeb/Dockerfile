@@ -4,7 +4,7 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY ["SeuProjeto.csproj", "."]
+COPY ["BarbeariaWeb.csproj", "."]
 RUN dotnet restore
 COPY . .
 RUN dotnet publish -c Release -o /app/publish
@@ -12,7 +12,7 @@ RUN dotnet publish -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "SeuProjeto.dll"]
+ENTRYPOINT ["dotnet", "BarbeariaWeb.dll"]
 ```
 
 ### 2. Crie o `.dockerignore`
