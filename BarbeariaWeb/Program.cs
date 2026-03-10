@@ -1,4 +1,6 @@
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
+using Google.Cloud.Firestore.V1;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,15 +15,32 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
-Environment.SetEnvironmentVariable(
-    "GOOGLE_APPLICATION_CREDENTIALS", 
-    Path.Combine(builder.Environment.ContentRootPath, "Config/barbearia-agendamento-d2e93-firebase-adminsdk-fbsvc-8938470cdf.json")
-);
+var firebaseJson = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS_JSON");
 
-builder.Services.AddSingleton(provider =>
+FirestoreDb firestoreDb;
+
+if (!string.IsNullOrEmpty(firebaseJson))
 {
-    return FirestoreDb.Create("barbearia-agendamento-d2e93");
-});
+    // Produção: lê as credenciais da variável de ambiente (Render)
+    var credential = GoogleCredential.FromJson(firebaseJson);
+    var firestoreClientBuilder = new FirestoreClientBuilder { Credential = credential };
+    firestoreDb = await FirestoreDb.CreateAsync(
+        "barbearia-agendamento-d2e93",
+        firestoreClientBuilder.Build()
+    );
+    builder.Services.AddSingleton(firestoreDb);
+}
+else
+{
+    // Desenvolvimento local: usa o arquivo JSON normalmente
+    Environment.SetEnvironmentVariable(
+        "GOOGLE_APPLICATION_CREDENTIALS",
+        Path.Combine(builder.Environment.ContentRootPath, "Config/barbearia-agendamento-d2e93-firebase-adminsdk-fbsvc-8938470cdf.json")
+    );
+    builder.Services.AddSingleton(provider => {
+        return FirestoreDb.Create("barbearia-agendamento-d2e93");
+    });
+}
 
 builder.Services.AddScoped<FirebaseService>();
 

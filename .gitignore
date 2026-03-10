@@ -66,3 +66,30 @@ BarbeariaWeb/.vs/BarbeariaWeb.slnx/FileContentIndex/c185e0d1-39f0-4305-8610-aa89
 BarbeariaWeb/.vs/BarbeariaWeb.slnx/FileContentIndex/cb195500-8c71-490c-b670-1468b3f3c949.vsidx
 BarbeariaWeb/.vs/BarbeariaWeb.slnx/FileContentIndex/dcc57ed4-6c4c-4481-b6e4-6eca62698c7d.vsidx
 /BarbeariaWeb/.vs/BarbeariaWeb.slnx/FileContentIndex
+
+## Compilados - nunca subir
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Dados sensíveis - NUNCA subir
+appsettings.Development.json
+appsettings.Production.json
+
+# CRÍTICO: credenciais Firebase - NUNCA subir no GitHub
+Config/
+*.json.bak
+
+## Logs
+*.log
+logs/
+
+## Sistema operacional
+.DS_Store
+Thumbs.db
