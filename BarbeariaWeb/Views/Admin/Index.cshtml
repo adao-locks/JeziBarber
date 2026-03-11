@@ -43,26 +43,90 @@
 
     </div>
 
-
     <!-- FILTRO -->
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
 
             <form method="get" class="row g-2 align-items-end">
 
-                <div class="col-12 col-md-4">
-                    <label class="form-label small text-muted">Selecionar Data</label>
-                    <input type="date"
-                           name="data"
-                           value="@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))"
-                           class="form-control">
+            <div class="mb-3">
+
+                <div class="btn-group">
+
+                    <a href="?data=@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))&modo=dia"
+                            class="btn @(ViewBag.Modo == "dia" ? "btn-primary" : "btn-outline-primary")">
+                        Dia
+                    </a>
+
+                    <a href="?data=@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))&modo=mes"
+                            class="btn @(ViewBag.Modo == "mes" ? "btn-primary" : "btn-outline-primary")">
+                        Mês
+                    </a>
+
                 </div>
 
-                <div class="col-12 col-md-2 d-grid">
-                    <button class="btn btn-primary">
-                        Filtrar
-                    </button>
-                </div>
+            </div>
+
+            <input type="hidden" name="modo" value="@ViewBag.Modo" />
+
+            <div class="col-6 col-md-2">
+            <label class="form-label small">Data</label>
+            <input type="date"
+                   name="data"
+                   value="@(((DateTime)ViewBag.DataSelecionada).ToString("yyyy-MM-dd"))"
+                   class="form-control">
+            </div>
+
+            <div class="col-6 col-md-2">
+            <label class="form-label small">Hora</label>
+            <input type="time"
+                   name="hora"
+                   value="@ViewBag.HoraFiltro"
+                   class="form-control">
+            </div>
+
+            <div class="col-12 col-md-2">
+            <label class="form-label small">Status</label>
+            <select name="status" class="form-select">
+
+            <option value="">Todos</option>
+
+            <option value="Agendado" selected="@(ViewBag.StatusFiltro == "Agendado" ? "selected" : null)">Agendado</option>
+
+            <option value="Concluido" selected="@(ViewBag.StatusFiltro == "Concluido" ? "selected" : null)">Concluído</option>
+
+            <option value="Cancelado" selected="@(ViewBag.StatusFiltro == "Cancelado" ? "selected" : null)">Cancelado</option>
+
+            </select>
+            </div>
+
+            <div class="col-12 col-md-2">
+            <label class="form-label small">Nome</label>
+            <input type="text"
+                   name="nome"
+                   value="@ViewBag.NomeFiltro"
+                   class="form-control"
+                   placeholder="Cliente">
+            </div>
+
+            <div class="col-12 col-md-2">
+            <label class="form-label small">Telefone</label>
+            <input type="text"
+                   name="telefone"
+                   value="@ViewBag.TelefoneFiltro"
+                   class="form-control"
+                   placeholder="Telefone">
+            </div>
+
+            <div class="col-12 col-md-2 d-grid">
+            <button class="btn btn-primary">
+            Filtrar
+            </button>
+            </div>
+
+                <a href="/Admin" class="btn btn-outline-secondary">
+                    Limpar
+                </a>
 
             </form>
 
@@ -180,6 +244,7 @@
                             <tr>
                                 <th>Cliente</th>
                                 <th>Telefone</th>
+                                <th class="@(ViewBag.Modo == "dia" ? "d-none" : "")">Data</th>
                                 <th>Horário</th>
                                 <th>Status</th>
                                 <th class="text-end">Ações</th>
@@ -190,7 +255,7 @@
 
                             @foreach (var a in Model.OrderBy(x => x.DataHora))
                             {
-                                <tr>
+                                <tr id="agendamento-@a.Id">
 
                                     <td class="fw-semibold">
                                         @a.NomeCliente
@@ -198,6 +263,10 @@
 
                                     <td>
                                         @a.Telefone
+                                    </td>
+
+                                    <td class="@(ViewBag.Modo == "dia" ? "d-none" : "")">
+                                        @a.DataHora.ToDateTime().ToLocalTime().ToString("dd/MM/yyyy")
                                     </td>
 
                                     <td class="fw-bold">
@@ -212,17 +281,15 @@
 
                                         @if (a.Status == "Agendado")
                                         {
-                                            <a asp-action="Concluir"
-                                               asp-route-id="@a.Id"
-                                               class="btn btn-sm btn-success me-2">
+                                            <button class="btn btn-sm btn-success me-2"
+                                                    onclick="alterarStatus('@a.Id','Concluido')">
                                                 Concluir
-                                            </a>
+                                            </button>
 
-                                            <a asp-action="Cancelar"
-                                               asp-route-id="@a.Id"
-                                               class="btn btn-sm btn-outline-danger">
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                    onclick="alterarStatus('@a.Id','Cancelado')">
                                                 Cancelar
-                                            </a>
+                                            </button>
                                         }
 
                                     </td>
@@ -247,7 +314,7 @@
 
         @foreach (var a in Model.OrderBy(x => x.DataHora))
         {
-            <div class="card border-0 shadow-sm mb-3">
+            <div class="card border-0 shadow-sm mb-3" data-id="@a.Id">
 
                 <div class="card-body">
 
@@ -265,7 +332,7 @@
                         📞 @a.Telefone
                     </div>
 
-                    <div class="mb-2">
+                    <div class="mb-2 status-badge">
                         @Html.Raw(GetStatusBadge(a.Status))
                     </div>
 
@@ -273,17 +340,15 @@
                     {
                         <div class="d-grid gap-2 mt-2">
 
-                            <a asp-action="Concluir"
-                               asp-route-id="@a.Id"
-                               class="btn btn-success">
-                                Concluir Atendimento
-                            </a>
+                            <button class="btn btn-success"
+                                    onclick="alterarStatus('@a.Id','Concluido')">
+                                Concluir
+                            </button>
 
-                            <a asp-action="Cancelar"
-                               asp-route-id="@a.Id"
-                               class="btn btn-outline-danger">
+                            <button class="btn btn-outline-danger"
+                                    onclick="alterarStatus('@a.Id','Cancelado')">
                                 Cancelar
-                            </a>
+                            </button>
 
                         </div>
                     }
@@ -346,3 +411,81 @@
         }
 
 </style>
+
+<script>
+
+    async function alterarStatus(id, status) {
+
+        if (!confirm("Confirmar alteração de status?"))
+            return;
+
+        try {
+
+            const response = await fetch("/Admin/AlterarStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: id,
+                    status: status
+                })
+            });
+
+            const result = await response.json();
+
+            if (!result.sucesso) {
+                alert("Erro ao atualizar.");
+                return;
+            }
+
+            // DESKTOP
+            const linha = document.getElementById("agendamento-" + id);
+
+            if (linha) {
+
+                let badge = "";
+
+                if (status === "Concluido")
+                    badge = "<span class='badge bg-success'>Concluído</span>";
+
+                if (status === "Cancelado")
+                    badge = "<span class='badge bg-danger'>Cancelado</span>";
+
+                linha.querySelector("td:nth-child(5)").innerHTML = badge;
+                linha.querySelector("td:last-child").innerHTML = "";
+            }
+
+            // MOBILE
+            const card = document.querySelector(`[data-id='${id}']`);
+
+            if (card) {
+
+                let badge = "";
+
+                if (status === "Concluido")
+                    badge = "<span class='badge bg-success'>Concluído</span>";
+
+                if (status === "Cancelado")
+                    badge = "<span class='badge bg-danger'>Cancelado</span>";
+
+                const statusBadge = card.querySelector(".status-badge");
+
+                if (statusBadge)
+                    statusBadge.innerHTML = badge;
+
+                const botoes = card.querySelector(".d-grid");
+
+                if (botoes)
+                    botoes.remove();
+            }
+
+        }
+        catch (e) {
+            alert("Erro ao comunicar com servidor.");
+            console.error(e);
+        }
+
+    }
+
+</script>

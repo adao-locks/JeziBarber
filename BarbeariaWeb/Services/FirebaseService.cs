@@ -59,10 +59,11 @@ public class FirebaseService
         return snapshot.Documents.Select(d => d.ConvertTo<Agendamento>()).ToList();
     }
 
-    public async Task AtualizarStatusAsync(string id, string novoStatus)
+    public async Task AtualizarStatusAsync(string id, string status)
     {
         var docRef = _db.Collection("agendamentos").Document(id);
-        await docRef.UpdateAsync("Status", novoStatus);
+
+        await docRef.UpdateAsync("Status", status);
     }
 
     public async Task<List<Agendamento>> GetAgendamentosPorDataAsync(string barbeiroId, DateTime data)
@@ -172,5 +173,24 @@ public class FirebaseService
         var novoHash = BCrypt.Net.BCrypt.HashPassword(novaSenha);
 
         await doc.Reference.UpdateAsync("senhaHash", novoHash);
+    }
+
+    public async Task<List<Agendamento>> GetAgendamentosPorMesAsync(DateTime data)
+    {
+        var inicioMes = new DateTime(data.Year, data.Month, 1);
+        var fimMes = inicioMes.AddMonths(1);
+
+        var inicioUtc = DateTime.SpecifyKind(inicioMes, DateTimeKind.Local).ToUniversalTime();
+        var fimUtc = DateTime.SpecifyKind(fimMes, DateTimeKind.Local).ToUniversalTime();
+
+        var snapshot = await _db.Collection("agendamentos")
+            .WhereGreaterThanOrEqualTo("DataHora", Timestamp.FromDateTime(inicioUtc))
+            .WhereLessThan("DataHora", Timestamp.FromDateTime(fimUtc))
+            .OrderBy("DataHora")
+            .GetSnapshotAsync();
+
+        return snapshot.Documents
+            .Select(d => d.ConvertTo<Agendamento>())
+            .ToList();
     }
 }

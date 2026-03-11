@@ -12,7 +12,7 @@ public class AdminController : Controller
 
     public AdminController(FirebaseService firebase)
     {
-        _firebase = firebase; 
+        _firebase = firebase;
     }
 
     [AllowAnonymous]
@@ -72,13 +72,50 @@ public class AdminController : Controller
     }
 
     [Authorize]
-    public async Task<IActionResult> Index(DateTime? data)
+    public async Task<IActionResult> Index(
+    DateTime? data,
+    string modo = "dia",
+    string status = "",
+    string nome = "",
+    string telefone = "",
+    string hora = ""
+)
     {
         DateTime dataFiltro = data ?? DateTime.Today;
 
-        var agendamentos = await _firebase.GetAgendamentosPorDataAsyncDash(dataFiltro);
+        List<Agendamento> agendamentos;
+
+        if (modo == "mes")
+            agendamentos = await _firebase.GetAgendamentosPorMesAsync(dataFiltro);
+        else
+            agendamentos = await _firebase.GetAgendamentosPorDataAsyncDash(dataFiltro);
+
+        // FILTROS
+        if (!string.IsNullOrWhiteSpace(status))
+            agendamentos = agendamentos.Where(a => a.Status == status).ToList();
+
+        if (!string.IsNullOrWhiteSpace(nome))
+            agendamentos = agendamentos
+                .Where(a => a.NomeCliente.ToLower().Contains(nome.ToLower()))
+                .ToList();
+
+        if (!string.IsNullOrWhiteSpace(telefone))
+            agendamentos = agendamentos
+                .Where(a => a.Telefone.Contains(telefone))
+                .ToList();
+
+        if (!string.IsNullOrWhiteSpace(hora))
+            agendamentos = agendamentos
+                .Where(a => a.DataHora.ToDateTime().ToLocalTime().ToString("HH:mm") == hora)
+                .ToList();
 
         ViewBag.DataSelecionada = dataFiltro;
+        ViewBag.Modo = modo;
+
+        ViewBag.StatusFiltro = status;
+        ViewBag.NomeFiltro = nome;
+        ViewBag.TelefoneFiltro = telefone;
+        ViewBag.HoraFiltro = hora;
 
         ViewBag.Total = agendamentos.Count;
         ViewBag.Agendados = agendamentos.Count(a => a.Status == "Agendado");
@@ -89,17 +126,54 @@ public class AdminController : Controller
     }
 
     [Authorize]
-    public async Task<IActionResult> Cancelar(string id)
+    public async Task<IActionResult> Cancelar(string id, DateTime? data, string modo,
+    string status, string nome, string telefone, string hora)
     {
         await _firebase.AtualizarStatusAsync(id, "Cancelado");
-        return RedirectToAction("Index");
+
+        return RedirectToAction("Index", new
+        {
+            data,
+            modo,
+            status,
+            nome,
+            telefone,
+            hora
+        });
     }
 
     [Authorize]
-    public async Task<IActionResult> Concluir(string id)
+    public async Task<IActionResult> Concluir(string id, DateTime? data, string modo,
+    string status, string nome, string telefone, string hora)
     {
         await _firebase.AtualizarStatusAsync(id, "Concluido");
-        return RedirectToAction("Index");
+
+        return RedirectToAction("Index", new
+        {
+            data,
+            modo,
+            status,
+            nome,
+            telefone,
+            hora
+        });
+    }
+
+    public class AlterarStatusRequest
+    {
+        public string Id { get; set; }
+        public string Status { get; set; }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AlterarStatus([FromBody] AlterarStatusRequest req)
+    {
+        if (req == null || string.IsNullOrEmpty(req.Id))
+            return BadRequest();
+
+        await _firebase.AtualizarStatusAsync(req.Id, req.Status);
+
+        return Json(new { sucesso = true });
     }
 
     [HttpGet]
